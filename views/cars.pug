@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  .container
+    h1 Search Results for Cars List
+    p Welcome to Shreyesh's #{title} List
+    .row
+      each toy in toys
+        .col-sm-4  
+          .card.mb-3  
+            .card-body
+              h5.card-title #{car.name}
+              p.card-text Type: #{car.type}
+              p.card-text Age Range: #{car.age_range}
