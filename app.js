@@ -3,46 +3,44 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+const carsRouter = require('./routes/cars');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var devicesRouter = require('./routes/cars');
-var gridRouter=require('./routes/grid');
-//var randomItemRouter = require('./routes/pick');
-
+const gridRouter = require('./routes/grid');
+const randomitemRouter = require('./routes/randomitem');
+const searchResultsRouter = require('./routes/searchResults');  // Correct import for searchResultsRouter
+ 
 var app = express();
-
+ 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-
+ 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/cars', devicesRouter);
-app.use('/grid',gridRouter);
-//app.use('/randomitem', randomItemRouter); 
-
-
+ 
+// Define routes
+app.use('/', indexRouter);          // Home route
+app.use('/users', usersRouter);     // Users route
+app.use('/cars', carsRouter);
+app.use('/', gridRouter);           // Grid route
+app.use('/', randomitemRouter);     // Random item route
+app.use('/searchresults', searchResultsRouter);  // Correct usage of searchResultsRouter
+ 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
-
+ 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
   res.status(err.status || 500);
   res.render('error');
 });
-
+ 
 module.exports = app;
